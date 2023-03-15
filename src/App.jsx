@@ -1,70 +1,65 @@
+import React, { useState } from "react";
 import "./App.css";
 import { Box, Typography, Button } from "@mui/material";
-import IconsContainer from "./components/IconsContainer";
+import useBreakpoint from "./hooks/useBreakpoint";
+import Share from "./components/Share";
+const App = () => {
+  const matches = useBreakpoint("sm");
+  const [modal, setModal] = useState(false);
 
-const css = {
-  button: {
-    background: "#cf8681",
-    fontWeight: "600",
-    fontSize: "16px",
-    fontFamily: "Inter",
-    textTransform: "capitalize",
-    "&:hover": { background: "#905f5c" },
-  },
-  linkContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-around",
-    background: "#272727",
-    borderRadius: "5px",
-    p: "5px",
-    m: "0 10px 0 10px",
-  },
-};
+  const title = "Something";
+  const text = "Hello, please come visit my website";
+  const url = "www.website.com.br";
 
-export default function App() {
+  // const canonical = document.querySelector("link[rel=canonical]");
+  // let url = canonical ? canonical.href : document.location.href;
+  // const shareDetails = { url, title, text };
+  const shareData = {
+    url: `https://share.toogoodtogo.com/store/1006/milestones/meals-saved/`,
+  };
+  if (!navigator.canShare) {
+    alert("navigator.canShare() not supported.");
+  } else if (navigator.canShare(shareData)) {
+    alert(
+      "navigator.canShare() supported. We can use navigator.share() to send the data."
+    );
+  } else {
+    alert("Specified data cannot be shared.");
+  }
+
+  const handleShareButton = () => {
+    // Check if navigator.share is supported by the browser
+    if (navigator.share) {
+      console.log("Congrats! Your browser supports Web Share API");
+      navigator
+        .share({
+          url: `https://share.toogoodtogo.com/store/1006/milestones/meals-saved/`,
+        })
+        .then(() => {
+          console.log("Sharing successfull");
+        })
+        .catch(() => {
+          console.log("Sharing failed");
+        });
+    } else {
+      console.log("Sorry! Your browser does not support Web Share API");
+    }
+  };
+
   return (
-    <Box
-      sx={{
-        background: "rgba(0,0,0,.4)",
-        width: "100vw",
-        height: "92.7vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Box
-        sx={{
-          background: "#0F0F0F",
-          borderRadius: "10px",
-          color: "#fff",
-          letterSpacing: "0em",
-          p: "10px 0 15px 0",
-          width: "97.5vw",
-        }}
-      >
-        <Typography
-          variant="h5"
-          fontWeight="600"
-          sx={{ mb: "20px", p: "0 20px 0 20px" }}
-        >
-          Share
-        </Typography>
-        <IconsContainer />
-        <Box sx={css.linkContainer}>
-          <Typography fontFamily="Inter">
-            partcuts.com/partcut/1dsF13fa!L
-          </Typography>
-          <Button
-            variant="contianed"
-            sx={css.button}
-            onClick={() =>  navigator.clipboard.writeText("partcuts.com/partcut/1dsF13fa!L")}
-          >
-            Copy
-          </Button>
-        </Box>
-      </Box>
+    <Box>
+      {!matches ? (
+        <Button variant="contained" onClick={handleShareButton}>
+          SHARE
+        </Button>
+      ) : (
+        <Button variant="contained" onClick={() => setModal(true)}>
+          SHARE
+        </Button>
+      )}
+      {modal && <Share setModal={setModal} />}
     </Box>
   );
-}
+};
+
+export default App;

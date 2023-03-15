@@ -10,12 +10,12 @@ const url = "https://www.google.com"
 const message = "Veni%20a%20googlearte%20algo%20pá"
 
 const platforms = [
-  { icon: whatsappIcon, title: "Whatsapp", href: `https://api.whatsapp.com/send?text=${url}${message}`},
-  { icon: emailIcon, title: "Email",href: `mailto:%20?body=${url}${message}` },
-  { icon: twitterIcon, title: "Twitter", href: ""  },
-  { icon: redditIcon, title: "Reddit", href: ""  },
-  { icon: discordIcon, title: "Discord", href: ""  },
-  { icon: telegramIcon, title: "Telegram", href: `tg:msg_url?url=${url}&text=${message}`  },
+  { icon: whatsappIcon, title: "Whatsapp", href: `https://api.whatsapp.com/send?text=${url + " "}${message}`},
+  { icon: emailIcon, title: "Email",href: `mailto:%20?body=${url + " "}${message}` },
+  { icon: twitterIcon, title: "Twitter", href: `https://twitter.com/intent/tweet?text=${url + " "}${message}`  },
+  { icon: redditIcon, title: "Reddit", href: `https://www.reddit.com/submit?url=${url + " "}${message}`  },
+  { icon: discordIcon, title: "Discord", href: `https://discordapp.com/share?url=${url + " "}${message}`  },
+  { icon: telegramIcon, title: "Telegram", href: `tg:msg_url?url=${url + " "}&text=${message}`  },
 ];
 
 const css = {
@@ -36,6 +36,7 @@ export default function IconsContainer() {
           href={platform.href}
           sx={css.link}
           component="a"
+          target="_blank"
         >
           <Box
             component="img"
